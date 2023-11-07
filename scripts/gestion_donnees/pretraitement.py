@@ -31,7 +31,7 @@ class Pretraitement :
 
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.25, random_state=1)
         return x_train, x_test, y_train, y_test,x_val, y_val
-        
+
 
     def Indice_outliers(self, df :pd.DataFrame,seuil : float) :
         z_scores=stats.zscore(df)
