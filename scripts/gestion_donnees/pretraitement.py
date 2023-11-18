@@ -46,6 +46,10 @@ class Pretraitement :
         
         return outliers
 
+    def get_num_classes(data_frame, class_column='class'):
+
+        num_classes = data_frame[class_column].nunique()
+        return num_classes
 
     # def Nombre_comp_optimal(df:pd.DataFrame , max_n_components):
     #     variance_expliqué = []

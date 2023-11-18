@@ -3,8 +3,8 @@ from sklearn.model_selection import GridSearchCV
 import numpy as np
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
-import matplotlib.pyplot as plt
 from sklearn.model_selection import learning_curve
+
 
 class Forets_aleatoires(object):
 
@@ -85,8 +85,21 @@ class Forets_aleatoires(object):
             ccp_alpha=0.0,
             max_samples=None, )
 
+
         modele_rf.fit(self.x_train, self.y_train)
         self.rf_classifier = modele_rf
+        train_sizes, train_scores, test_scores = learning_curve(
+        modele_rf, self.x_train, self.y_train, cv=2, scoring="accuracy")
+
+        learning_curve_data = {
+            "train_sizes": train_sizes,
+            "train_accuracy": np.mean(train_scores, axis=1),
+            "val_accuracy": np.mean(test_scores, axis=1),
+            "train_loss": np.mean(train_scores, axis=1), 
+            "val_loss": np.mean(test_scores, axis=1)  
+        }
+        self.learning_curve_data = learning_curve_data
+
 
     def prediction(self):
         return self.rf_classifier.predict(self.x_test)
@@ -101,73 +114,6 @@ class Forets_aleatoires(object):
         print("\nClassification Report:")
         print(classification_report(self.y_test, y_pred))
 
-# print recall
-# print F1_score
-# learning curve
-# improve visualization confusion matrix
 
-    # def plot_learning_curve(self,model, title="Learning Curve"):
-    #     train_sizes, train_scores, test_scores = learning_curve(
-    #         model.rf_classifier, self.x_train, self.y_train, cv=2, n_jobs=-1, 
-    #         train_sizes=np.linspace(0.1, 1.0, 5), scoring="accuracy")
 
-    #     train_scores_mean = np.mean(train_scores, axis=1)
-    #     train_scores_std = np.std(train_scores, axis=1)
-    #     test_scores_mean = np.mean(test_scores, axis=1)
-    #     test_scores_std = np.std(test_scores, axis=1)
 
-    #     plt.figure()
-    #     plt.title(title)
-    #     plt.xlabel("Training examples")
-    #     plt.ylabel("Score")
-
-    #     plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
-    #                     train_scores_mean + train_scores_std, alpha=0.1, color="r")
-    #     plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
-    #                     test_scores_mean + test_scores_std, alpha=0.1, color="g")
-    #     plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="Training score")
-    #     plt.plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
-
-    #     plt.legend(loc="best")
-    #     plt.grid(True)
-    #     plt.show()
-
-    def compute_learning_curve(self):
-        train_sizes, train_scores, test_scores = learning_curve(
-            self.rf_classifier, self.x_train, self.y_train, cv=2, n_jobs=-1,
-            train_sizes=np.linspace(0.1, 1.0, 5), scoring="accuracy")
-
-        self.learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_scores": train_scores,
-            "test_scores": test_scores
-        }
-
-    def plot_learning_curve(self, title="Learning Curve"):
-        if self.learning_curve_data is None:
-            self.compute_learning_curve()
-
-        train_sizes = self.learning_curve_data["train_sizes"]
-        train_scores = self.learning_curve_data["train_scores"]
-        test_scores = self.learning_curve_data["test_scores"]
-
-        train_scores_mean = np.mean(train_scores, axis=1)
-        train_scores_std = np.std(train_scores, axis=1)
-        test_scores_mean = np.mean(test_scores, axis=1)
-        test_scores_std = np.std(test_scores, axis=1)
-
-        plt.figure()
-        plt.title(title)
-        plt.xlabel("Training examples")
-        plt.ylabel("Score")
-
-        plt.fill_between(train_sizes, train_scores_mean - train_scores_std,
-                         train_scores_mean + train_scores_std, alpha=0.1, color="r")
-        plt.fill_between(train_sizes, test_scores_mean - test_scores_std,
-                         test_scores_mean + test_scores_std, alpha=0.1, color="g")
-        plt.plot(train_sizes, train_scores_mean, 'o-', color="r", label="Training score")
-        plt.plot(train_sizes, test_scores_mean, 'o-', color="g", label="Cross-validation score")
-
-        plt.legend(loc="best")
-        plt.grid(True)
-        plt.show()
