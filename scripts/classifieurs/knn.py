@@ -3,14 +3,16 @@ from sklearn.model_selection import learning_curve
 from sklearn.model_selection import RandomizedSearchCV, KFold
 from sklearn.tree import DecisionTreeClassifier
 import numpy as np
-from sklearn.model_selection import GridSearchCV
-import pandas as pd
 from sklearn import svm
-
+from sklearn.model_selection import GridSearchCV
+import numpy as np
+import pandas as pd
+import numpy as np
 from sklearn.svm import SVC
+from sklearn.model_selection import RandomizedSearchCV, KFold
 from sklearn.metrics import classification_report, confusion_matrix
 
-class Bagging(object):
+class Knn(object):
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.n_estimators = 50
         self.base_classifier = None
@@ -25,7 +27,7 @@ class Bagging(object):
             base_estimator=None, 
             n_estimators=self.n_estimators
         )
-    def validation_croisee_gridsearch(self):
+    def recherche_hyper(self):
         p_grid = {'n_estimators': np.arange(5, 101, 5),
                   'max_samples': np.arange(0.1, 1.1, 0.1),
                   'base_estimator__criterion': ['gini', 'entropy'],
@@ -45,7 +47,7 @@ class Bagging(object):
         return best_params
 
     def garder_meilleur_hyperparameters(self):
-        best_params = self.validation_croisee_gridsearch()
+        best_params = self.recherche_hyper()
         base_estimator = DecisionTreeClassifier(criterion=best_params['base_estimator__criterion'],
                                                 max_depth=best_params['base_estimator__max_depth'],
                                                 min_samples_split=best_params['base_estimator__min_samples_split'],

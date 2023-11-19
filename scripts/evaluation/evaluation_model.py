@@ -45,10 +45,11 @@ class Evaluation(object):
             plt.show()
         else:
             print("Model does not support predict_proba method.")
+            
     def plot_learning_curves(self):
         if self.learning_curve_data is not None:
             data = self.learning_curve_data
-            epochs = range(1, len(data['train_accuracy']) + 1)
+            epochs = data['train_sizes']
 
             plt.figure(figsize=(12, 5))
 
@@ -56,7 +57,7 @@ class Evaluation(object):
             plt.plot(epochs, data['train_accuracy'], 'b', label='Training accuracy')
             plt.plot(epochs, data['val_accuracy'], 'r', label='Validation accuracy')
             plt.title('Training and Validation Accuracy')
-            plt.xlabel('Epochs')
+            plt.xlabel('Training Size')
             plt.ylabel('Accuracy')
             plt.legend()
 
@@ -64,7 +65,7 @@ class Evaluation(object):
             plt.plot(epochs, data['train_loss'], 'b', label='Training loss')
             plt.plot(epochs, data['val_loss'], 'r', label='Validation loss')
             plt.title('Training and Validation Loss')
-            plt.xlabel('Epochs')
+            plt.xlabel('Training Size')
             plt.ylabel('Loss')
             plt.legend()
 
