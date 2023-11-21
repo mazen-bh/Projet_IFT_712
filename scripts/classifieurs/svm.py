@@ -24,7 +24,9 @@ class SVM_Classificateur(object):
             C=self.nmb_arbre,
             gamma='scale',
             kernel='rbf',
-            probability=True
+            probability=True,
+            decision_function_shape='ovr'
+    
         )
  
     def validation_croisee_gridsearch(self):

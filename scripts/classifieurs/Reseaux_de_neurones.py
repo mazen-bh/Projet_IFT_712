@@ -42,7 +42,7 @@ class Reseaux_de_neurones(object):
         param_grid = {
             'hidden_layer_sizes': [(50, 50), (100, 100), (100, 50), (100,)],
             'alpha': [0.0001, 0.001, 0.01],
-            'activation': ['relu', 'tanh', 'logistic'],
+            'activation': ['relu', 'tanh', 'logistic', 'identity', 'leaky_relu', 'elu', 'selu', 'sigmoid', 'softmax', 'linear', 'swish'],
             'learning_rate_init': [0.1, 0.01, 0.001],
         }
  
