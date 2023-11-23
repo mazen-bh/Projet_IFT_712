@@ -90,32 +90,6 @@ class Forets_aleatoires(object):
         modele_rf.fit(self.x_train, self.y_train)
         self.rf_classifier = modele_rf
 
-        train_sizes, train_scores, test_scores = learning_curve(
-            modele_rf, self.x_train, self.y_train, cv=2, scoring="accuracy", train_sizes=np.linspace(0.1, 1.0, 10)
-        )
-        train_accuracy = np.mean(train_scores, axis=1)
-        val_accuracy = np.mean(test_scores, axis=1)
-
-        train_loss = np.zeros_like(train_accuracy)
-        val_loss = np.zeros_like(val_accuracy)
-
-        for i, size in enumerate(train_sizes):
-            y_pred_train_proba = modele_rf.predict_proba(self.x_train[:int(size * len(self.x_train))])
-            y_pred_val_proba = modele_rf.predict_proba(self.x_train)
-
-            train_loss[i] = log_loss(self.y_train[:int(size * len(self.y_train))], y_pred_train_proba)
-            val_loss[i] = log_loss(self.y_train, y_pred_val_proba)
-
-
-        learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_accuracy": train_accuracy,
-            "val_accuracy": val_accuracy,
-            "train_loss": train_loss,
-            "val_loss": val_loss
-        }
-        self.learning_curve_data = learning_curve_data
-
 
     def prediction(self):
         return self.rf_classifier.predict(self.x_test)

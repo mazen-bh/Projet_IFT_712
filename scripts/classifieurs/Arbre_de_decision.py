@@ -77,18 +77,7 @@ class Arbre_de_decision(object):
 
         self.dt_classifier = model_rf
 
-        train_sizes, train_scores, test_scores = learning_curve(
-            model_rf, self.x_train, self.y_train, cv=5, scoring="accuracy"
-        )
 
-        learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_accuracy": np.mean(train_scores, axis=1),
-            "val_accuracy": np.mean(test_scores, axis=1),
-            "train_loss": np.mean(train_scores, axis=1), 
-            "val_loss": np.mean(test_scores, axis=1)  
-        }
-        self.learning_curve_data = learning_curve_data
 
     def prediction(self):
         return self.dt_classifier.predict(self.x_test)

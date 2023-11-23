@@ -12,6 +12,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 
 class Bagging(object):
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
+        
         self.n_estimators = 50
         self.base_classifier = None
         self.x_train = x_train
@@ -64,17 +65,6 @@ class Bagging(object):
         model_bc.fit(self.x_train, self.y_train)
         self.bc_classifier = model_bc
 
-        train_sizes, train_scores, test_scores = learning_curve(
-            model_bc, self.x_train, self.y_train, cv=2, scoring="accuracy")
-
-        learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_accuracy": np.mean(train_scores, axis=1),
-            "val_accuracy": np.mean(test_scores, axis=1),
-            "train_loss": np.mean(train_scores, axis=1),
-            "val_loss": np.mean(test_scores, axis=1)
-        }
-        self.learning_curve_data = learning_curve_data
 
     def prediction(self):
         return self.classif.predict(self.x_test)

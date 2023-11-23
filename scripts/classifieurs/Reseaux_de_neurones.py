@@ -75,14 +75,6 @@ class Reseaux_de_neurones(object):
             self.nn_classifier, self.x_train, self.y_train, cv=5, scoring="accuracy"
         )
 
-        learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_accuracy": np.mean(train_scores, axis=1),
-            "val_accuracy": np.mean(test_scores, axis=1),
-            "train_loss": np.mean(train_scores, axis=1), 
-            "val_loss": np.mean(test_scores, axis=1)  
-        }
-        self.learning_curve_data = learning_curve_data
 
     def prediction(self):
         return self.nn_classifier.predict(self.x_test)

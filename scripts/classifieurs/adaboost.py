@@ -68,17 +68,6 @@ class AdaBoost_model(object):
         model_ab.fit(self.x_train, self.y_train)
         self.ab_classifier = model_ab
 
-        train_sizes, train_scores, test_scores = learning_curve(
-            model_ab, self.x_train, self.y_train, cv=2, scoring="accuracy")
-
-        learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_accuracy": np.mean(train_scores, axis=1),
-            "val_accuracy": np.mean(test_scores, axis=1),
-            "train_loss": np.mean(train_scores, axis=1), 
-            "val_loss": np.mean(test_scores, axis=1)  
-        }
-        self.learning_curve_data = learning_curve_data
 
     def prediction(self):
         return self.ab_classifier.predict(self.x_test)
