@@ -82,3 +82,53 @@ class Evaluation(object):
         print("Classification Report:\n", report)
 
 
+ 
+    def plot_learning_curves(self, train_sizes, scoring='accuracy'):
+
+        train_sizes, train_scores, val_scores = learning_curve(
+            self.model, self.x_train, self.y_train, cv=5,
+            train_sizes=train_sizes, scoring=scoring)
+ 
+        train_mean = np.mean(train_scores, axis=1)
+        train_std = np.std(train_scores, axis=1)
+        val_mean = np.mean(val_scores, axis=1)
+        val_std = np.std(val_scores, axis=1)
+        
+        plt.figure(figsize=(12, 8))
+        plt.plot(train_sizes, train_mean, label='Score d\'entraînement')
+        plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1)
+        plt.plot(train_sizes, val_mean, label='Score de validation')
+        plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, alpha=0.1)
+        plt.title('Courbes d\'apprentissage')
+        plt.xlabel('Taille de l\'ensemble d\'entraînement')
+        plt.ylabel(scoring.capitalize())
+
+        plt.legend(loc='best')
+        plt.grid()
+        plt.show()
+
+    def plot_learning_curves_loss(self, train_sizes, scoring='neg_log_loss'):
+
+        train_sizes, train_scores, val_scores = learning_curve(
+            self.model, self.x_train, self.y_train, cv=5,
+            train_sizes=train_sizes, scoring=scoring, shuffle=True, random_state=42)
+
+        train_mean = np.mean(train_scores, axis=1)
+        train_std = np.std(train_scores, axis=1)
+        val_mean = np.mean(val_scores, axis=1)
+        val_std = np.std(val_scores, axis=1)
+        
+        plt.figure(figsize=(12, 8))
+        plt.plot(train_sizes, train_mean, label='Perte d\'entraînement')
+        plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1)
+        plt.plot(train_sizes, val_mean, label='Perte de validation')
+        plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, alpha=0.1)
+        plt.title('Courbes d\'apprentissage - Perte')
+        plt.xlabel('Taille de l\'ensemble d\'entraînement')
+        plt.ylabel('Perte')
+
+        plt.legend(loc='best')
+        plt.grid()
+        plt.show()
+
+
