@@ -10,7 +10,7 @@ import seaborn as sns
 from sklearn.preprocessing import LabelBinarizer
  
 # Classe Perceptron
-class Perceptron_Classificateur(object):
+class Perceptron_model(object):
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.x_train = x_train
         self.y_train = y_train

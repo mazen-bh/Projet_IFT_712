@@ -65,12 +65,13 @@ class Arbre_de_decision(object):
 
     def entrainement(self):
         model_rf = RandomForestClassifier(
-            n_estimators=100,  
+            n_estimators=100,
             criterion=self.criterion,
             max_depth=self.max_depth,
             min_samples_split=self.min_samples_split,
             min_samples_leaf=self.min_samples_leaf,
             random_state=None,
+            n_jobs=-1  # Utilisation de tous les cœurs disponibles
         )
 
         model_rf.fit(self.x_train, self.y_train)

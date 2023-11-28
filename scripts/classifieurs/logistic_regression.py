@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.preprocessing import LabelBinarizer
  
-class LogisticRegression_Classificateur(object):
+class LogisticRegression_model(object):
 
     param_grid_default = {'C': [0.1, 1, 10], 'penalty': ['l1', 'l2'], 'solver': ['liblinear']}
 
