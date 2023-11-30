@@ -40,9 +40,11 @@ class Reseaux_de_neurones(object):
         
     def validation_croisee_gridsearch(self):
         param_grid = {
-            'hidden_layer_sizes': [(50, 50), (100, 100), (100, 50), (100,)],
-            'alpha': [0.0001, 0.001, 0.01],
-            'activation': ['relu', 'tanh', 'logistic', 'identity', 'leaky_relu', 'elu', 'selu', 'sigmoid', 'softmax', 'linear', 'swish'],
+            # Réduction de la complexité des structures des couches cachées
+            'hidden_layer_sizes': [(50, 50), (50, 30), (30,)],
+            # Utilisation d'une plage plus large pour alpha
+            'alpha': [0.001, 0.01, 0.1],
+            'activation': ['relu', 'tanh', 'logistic'],
             'learning_rate_init': [0.1, 0.01, 0.001],
         }
  
@@ -63,11 +65,12 @@ class Reseaux_de_neurones(object):
             alpha=self.best_hyperparameters['alpha'],
             learning_rate_init=self.best_hyperparameters['learning_rate_init'],
             max_iter=500,
-            early_stopping=True,
-            n_iter_no_change=10,
-            solver='lbfgs',  
-
+            early_stopping=True,  # Activation de l'arrêt précoce
+            n_iter_no_change=10,  # Arrêt si aucune amélioration après 10 itérations
+            solver='lbfgs',
         )
+
+        
 
     def entrainement(self):
         self.nn_classifier.fit(self.x_train, self.y_train)

@@ -1,76 +1,61 @@
 from sklearn.ensemble import AdaBoostClassifier
-from sklearn.model_selection import GridSearchCV
-import numpy as np
-import pandas as pd
-from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.model_selection import learning_curve
+from sklearn.model_selection import GridSearchCV, StratifiedKFold, ParameterGrid
 from sklearn.tree import DecisionTreeClassifier
+import pandas as pd
+import numpy as np
 
 class AdaBoost_model(object):
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
-        self.n_estimators = 50
-        self.learning_rate = 1.0
-        self.base_estimator = None
         self.x_train = x_train
         self.y_train = y_train
         self.x_val = x_val
         self.y_val = y_val
         self.x_test = x_test
         self.y_test = y_test
-        self.learning_curve_data = None
-        self.ab_classifier = AdaBoostClassifier(
-            n_estimators=self.n_estimators,
-            learning_rate=self.learning_rate,
-            base_estimator=self.base_estimator
-        )
+        self.ab_classifier = AdaBoostClassifier()
 
     def validation_croisee_gridsearch(self):
+        dt_params = {
+            'max_depth': [1],  # Réduction de la profondeur maximale
+            'min_samples_split': [6, 8],  # Augmentation de min_samples_split
+            'min_samples_leaf': [3, 4],  # Augmentation de min_samples_leaf
+            'max_features': [None, 'sqrt']
+        }
+
         parameters = {
-            'n_estimators': [50, 75, 100, 200, 300],
-            'learning_rate': [0.01, 0.1, 0.5, 1.0],
-            'base_estimator': [DecisionTreeClassifier(max_depth=1), DecisionTreeClassifier(max_depth=2)],
-            'random_state': [None, 42],
+            'n_estimators': [30, 50],  # Réduction du nombre d'estimateurs
+            'learning_rate': [0.01, 0.1],
+            'base_estimator': [DecisionTreeClassifier(**params) for params in ParameterGrid(dt_params)],
+            'algorithm': ['SAMME.R']  # Utilisation de SAMME.R
         }
 
-        scoring = {
-            'Accuracy': 'accuracy',
-            'Precision': 'precision_weighted'
-        }
+        stratified_k_fold = StratifiedKFold(n_splits=5)
 
-        clf = GridSearchCV(self.ab_classifier, parameters, cv=2, scoring=scoring, refit='Accuracy')
-        combined_x = pd.concat([self.x_train, self.x_val], ignore_index=True)
-        combined_y = self.y_train + self.y_val
-        clf.fit(combined_x, combined_y)
+        clf = GridSearchCV(self.ab_classifier, parameters, cv=stratified_k_fold)
+        clf.fit(self.x_train, self.y_train)
 
-        self.n_estimators = clf.best_params_["n_estimators"]
-        self.learning_rate = clf.best_params_["learning_rate"]
-        self.base_estimator = clf.best_params_["base_estimator"]
-
-        return combined_x, combined_y
-
-    def garder_meilleur_hyperparameters(self):
-        combined_x, combined_y = self.validation_croisee_gridsearch()
-        self.ab_classifier = AdaBoostClassifier(
-            n_estimators=self.n_estimators,
-            learning_rate=self.learning_rate,
-            base_estimator=self.base_estimator
-        )
-
-        self.ab_classifier.fit(combined_x, combined_y)
+        self.ab_classifier.set_params(**clf.best_params_)
+        print("Meilleurs hyperparamètres:", clf.best_params_)
 
     def entrainement(self):
-        model_ab = AdaBoostClassifier(
-            n_estimators=self.n_estimators,
-            learning_rate=self.learning_rate,
-            base_estimator=self.base_estimator
-        )
-
-        model_ab.fit(self.x_train, self.y_train)
-        self.ab_classifier = model_ab
-
+        self.validation_croisee_gridsearch()
+        self.ab_classifier.fit(self.x_train, self.y_train)
 
     def prediction(self):
         return self.ab_classifier.predict(self.x_test)
 
     def predict_proba(self):
         return self.ab_classifier.predict_proba(self.x_test)
+
+    def evaluer_sur_validation(self):
+        predictions_val = self.ab_classifier.predict(self.x_val)
+        accuracy_val = np.mean(predictions_val == self.y_val)
+        print("Précision sur l'ensemble de validation:", accuracy_val)
+
+# Exemple d'utilisation du modèle
+# Assurez-vous de remplacer ces variables par vos propres données
+# x_train, y_train, x_val, y_val, x_test, y_test = [Votre ensemble de données ici]
+# model = AdaBoost_model(x_train, y_train, x_val, y_val, x_test, y_test)
+# model.entrainement()
+# model.evaluer_sur_validation()
+# predictions = model.prediction()

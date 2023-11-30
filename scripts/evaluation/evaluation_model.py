@@ -83,52 +83,75 @@ class Evaluation(object):
 
 
  
-    def plot_learning_curves(self, train_sizes, scoring='accuracy'):
+    # def plot_learning_curves(self, train_sizes, scoring='accuracy'):
 
-        train_sizes, train_scores, val_scores = learning_curve(
-            self.model, self.x_train, self.y_train, cv=5,
-            train_sizes=train_sizes, scoring=scoring)
+    #     train_sizes, train_scores, val_scores = learning_curve(
+    #         self.model, self.x_train, self.y_train, cv=5,
+    #         train_sizes=train_sizes, scoring=scoring)
  
-        train_mean = np.mean(train_scores, axis=1)
-        train_std = np.std(train_scores, axis=1)
-        val_mean = np.mean(val_scores, axis=1)
-        val_std = np.std(val_scores, axis=1)
+    #     train_mean = np.mean(train_scores, axis=1)
+    #     train_std = np.std(train_scores, axis=1)
+    #     val_mean = np.mean(val_scores, axis=1)
+    #     val_std = np.std(val_scores, axis=1)
         
-        plt.figure(figsize=(12, 8))
-        plt.plot(train_sizes, train_mean, label='Score d\'entraînement')
-        plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1)
-        plt.plot(train_sizes, val_mean, label='Score de validation')
-        plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, alpha=0.1)
-        plt.title('Courbes d\'apprentissage')
-        plt.xlabel('Taille de l\'ensemble d\'entraînement')
-        plt.ylabel(scoring.capitalize())
+    #     plt.figure(figsize=(12, 8))
+    #     plt.plot(train_sizes, train_mean, label='Score d\'entraînement')
+    #     plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1)
+    #     plt.plot(train_sizes, val_mean, label='Score de validation')
+    #     plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, alpha=0.1)
+    #     plt.title('Courbes d\'apprentissage')
+    #     plt.xlabel('Taille de l\'ensemble d\'entraînement')
+    #     plt.ylabel(scoring.capitalize())
 
-        plt.legend(loc='best')
-        plt.grid()
-        plt.show()
+    #     plt.legend(loc='best')
+    #     plt.grid()
+    #     plt.show()
 
-    def plot_learning_curves_loss(self, train_sizes, scoring='neg_log_loss'):
-
-        train_sizes, train_scores, val_scores = learning_curve(
+    def plot_learning_curves_loss(self, train_sizes):
+        train_sizes, train_scores, test_scores = learning_curve(
             self.model, self.x_train, self.y_train, cv=5,
-            train_sizes=train_sizes, scoring=scoring, shuffle=True, random_state=42)
+            train_sizes=train_sizes, scoring='accuracy')
 
-        train_mean = np.mean(train_scores, axis=1)
-        train_std = np.std(train_scores, axis=1)
-        val_mean = np.mean(val_scores, axis=1)
-        val_std = np.std(val_scores, axis=1)
-        
+        # Calcul de la perte comme 1 - accuracy
+        train_loss = 1 - np.mean(train_scores, axis=1)
+        train_loss_std = np.std(train_scores, axis=1)
+        test_loss = 1 - np.mean(test_scores, axis=1)
+        test_loss_std = np.std(test_scores, axis=1)
+
         plt.figure(figsize=(12, 8))
-        plt.plot(train_sizes, train_mean, label='Perte d\'entraînement')
-        plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1)
-        plt.plot(train_sizes, val_mean, label='Perte de validation')
-        plt.fill_between(train_sizes, val_mean - val_std, val_mean + val_std, alpha=0.1)
-        plt.title('Courbes d\'apprentissage - Perte')
+        plt.plot(train_sizes, train_loss, 'o-', color="r", label="Perte d'entraînement")
+        plt.fill_between(train_sizes, train_loss - train_loss_std, train_loss + train_loss_std, alpha=0.1, color="r")
+        plt.plot(train_sizes, test_loss, 'o-', color="g", label="Perte de test")
+        plt.fill_between(train_sizes, test_loss - test_loss_std, test_loss + test_loss_std, alpha=0.1, color="g")
+
+        plt.title('Courbes de perte d\'apprentissage')
         plt.xlabel('Taille de l\'ensemble d\'entraînement')
         plt.ylabel('Perte')
-
         plt.legend(loc='best')
         plt.grid()
         plt.show()
+    
+    def plot_learning_curves_accuracy(self, train_sizes):
+        train_sizes, train_scores, test_scores = learning_curve(
+            self.model, self.x_train, self.y_train, cv=5,
+            train_sizes=train_sizes, scoring='accuracy')
 
+        # Calcul de la moyenne et de l'écart-type des scores
+        train_mean = np.mean(train_scores, axis=1)
+        train_std = np.std(train_scores, axis=1)
+        test_mean = np.mean(test_scores, axis=1)
+        test_std = np.std(test_scores, axis=1)
+
+        plt.figure(figsize=(12, 8))
+        plt.plot(train_sizes, train_mean, 'o-', color="r", label="Précision d'entraînement")
+        plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1, color="r")
+        plt.plot(train_sizes, test_mean, 'o-', color="g", label="Précision de test")
+        plt.fill_between(train_sizes, test_mean - test_std, test_mean + test_std, alpha=0.1, color="g")
+
+        plt.title('Courbes d\'apprentissage de précision')
+        plt.xlabel('Taille de l\'ensemble d\'entraînement')
+        plt.ylabel('Précision')
+        plt.legend(loc='best')
+        plt.grid()
+        plt.show()
 

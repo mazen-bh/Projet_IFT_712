@@ -42,12 +42,9 @@ class Knn(object):
  
         print("Meilleurs hyperparamètres:", clf.best_params_)
         return combined_x, combined_y
- 
-    def garder_meilleur_hyperparameters(self):
         combined_x, combined_y = self.validation_croisee_gridsearch()
         self.knn_classifier.fit(combined_x, combined_y)
- 
-    # Inside the entrainement method in KNN_Classificateur
+
     def entrainement(self):
         clf = KNeighborsClassifier(
             n_neighbors=3,
@@ -65,9 +62,3 @@ class Knn(object):
     def prediction_proba(self):
         return self.knn_classifier.predict_proba(self.x_test)
  
-    def resultats_model(self):
-        y_pred = self.knn_classifier.predict(self.x_test)
-        print("Matrice de confusion:")
-        print(confusion_matrix(self.y_test, y_pred))
-        print("\nRapport de classification:")
-        print(classification_report(self.y_test, y_pred))
