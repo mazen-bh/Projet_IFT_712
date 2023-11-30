@@ -30,7 +30,7 @@ class Perceptron_model(object):
         clf = GridSearchCV(self.perceptron_classifier, parameters, cv=5, n_jobs=-1)
         clf.fit(self.x_val, self.y_val)  # Utilisation de x_val et y_val pour la recherche d'hyperparamètres
 
-        # Mise à jour du classificateur avec les meilleurs hyperparamètres trouvés
+    
         self.perceptron_classifier = clf.best_estimator_
 
         print("Meilleurs hyperparamètres:", clf.best_params_)
@@ -38,8 +38,6 @@ class Perceptron_model(object):
     def entrainement(self):
         self.validation_croisee_gridsearch()
         self.perceptron_classifier.fit(self.x_train, self.y_train)  # Entraînement avec x_train et y_train
-
-        # Génération de la courbe d'apprentissage
         train_sizes, train_scores, test_scores = learning_curve(
             self.perceptron_classifier, self.x_train, self.y_train, cv=5, scoring="accuracy")
         

@@ -1,13 +1,13 @@
 from sklearn import svm
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import classification_report, confusion_matrix
+
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import learning_curve
  
 from sklearn import svm
 from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import confusion_matrix, classification_report
+
 import pandas as pd
 
 class SVM_Classificateur(object):
