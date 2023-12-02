@@ -4,8 +4,6 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from scipy import stats
-import umap.umap_ as umap
-from sklearn.decomposition import PCA
 
 class Pretraitement :
 
