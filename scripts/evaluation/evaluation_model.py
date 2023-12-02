@@ -155,3 +155,26 @@ class Evaluation(object):
         plt.grid()
         plt.show()
 
+    def tracer_courbes_roc(classifieurs, X_test, y_test):
+        plt.figure(figsize=(10, 8))
+
+        for nom, clf in classifieurs.items():
+            # Prédiction des probabilités pour la classe positive (classe 1)
+            y_proba = clf.predict_proba(X_test)[:, 1]
+
+            # Calcul des taux de vrais positifs et faux positifs
+            fpr, tpr, seuils = roc_curve(y_test, y_proba)
+            roc_auc = auc(fpr, tpr)
+
+            # Tracer la courbe ROC pour le classifieur actuel
+            plt.plot(fpr, tpr, lw=2, label=f'{nom} (aire = {roc_auc:.2f})')
+
+        plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--')
+        plt.xlim([0.0, 1.0])
+        plt.ylim([0.0, 1.05])
+        plt.xlabel('Taux de Faux Positifs')
+        plt.ylabel('Taux de Vrais Positifs')
+        plt.title('Courbes ROC des différents classifieurs')
+        plt.legend(loc='lower right')
+        plt.grid()
+        plt.show()
