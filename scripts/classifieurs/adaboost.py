@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 
 class AdaBoost_model(object):
+
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.x_train = x_train
         self.y_train = y_train
@@ -51,11 +52,3 @@ class AdaBoost_model(object):
         predictions_val = self.ab_classifier.predict(self.x_val)
         accuracy_val = np.mean(predictions_val == self.y_val)
         print("Précision sur l'ensemble de validation:", accuracy_val)
-
-# Exemple d'utilisation du modèle
-# Assurez-vous de remplacer ces variables par vos propres données
-# x_train, y_train, x_val, y_val, x_test, y_test = [Votre ensemble de données ici]
-# model = AdaBoost_model(x_train, y_train, x_val, y_val, x_test, y_test)
-# model.entrainement()
-# model.evaluer_sur_validation()
-# predictions = model.prediction()

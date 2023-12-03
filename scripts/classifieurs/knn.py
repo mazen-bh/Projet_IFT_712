@@ -53,8 +53,6 @@ class Knn(object):
         )
         clf.fit(self.x_train, self.y_train)
         self.knn_classifier = clf
-  
- 
  
     def prediction(self):
         return self.knn_classifier.predict(self.x_test)

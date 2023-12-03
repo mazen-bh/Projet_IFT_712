@@ -4,7 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import GridSearchCV
 
-class Comninaison(object):
+class Combinaison(object):
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.x_train = x_train
         self.y_train = y_train

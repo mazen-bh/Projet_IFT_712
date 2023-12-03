@@ -7,7 +7,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Classe Perceptron
+
 class Perceptron_model(object):
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.x_train = x_train
