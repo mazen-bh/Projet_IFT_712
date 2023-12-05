@@ -5,6 +5,7 @@ import pandas as pd
 import numpy as np
 
 class AdaBoost_model(object):
+
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.x_train = x_train
         self.y_train = y_train
