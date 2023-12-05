@@ -16,17 +16,16 @@ class AdaBoost_model(object):
 
     def validation_croisee_gridsearch(self):
         dt_params = {
-            'max_depth': [1],  # Réduction de la profondeur maximale
-            'min_samples_split': [6, 8],  # Augmentation de min_samples_split
-            'min_samples_leaf': [3, 4],  # Augmentation de min_samples_leaf
-            'max_features': [None, 'sqrt']
+            'max_depth': [1],  
+            'min_samples_split': [6, 8], 
+            'min_samples_leaf': [3, 4],  
         }
 
         parameters = {
-            'n_estimators': [30, 50],  # Réduction du nombre d'estimateurs
+            'n_estimators': [30, 50],  
             'learning_rate': [0.01, 0.1],
             'base_estimator': [DecisionTreeClassifier(**params) for params in ParameterGrid(dt_params)],
-            'algorithm': ['SAMME.R']  # Utilisation de SAMME.R
+            'algorithm': ['SAMME.R']  
         }
 
         stratified_k_fold = StratifiedKFold(n_splits=5)
@@ -44,18 +43,5 @@ class AdaBoost_model(object):
     def prediction(self):
         return self.ab_classifier.predict(self.x_test)
 
-    def predict_proba(self):
+    def prediction_proba(self):
         return self.ab_classifier.predict_proba(self.x_test)
-
-    def evaluer_sur_validation(self):
-        predictions_val = self.ab_classifier.predict(self.x_val)
-        accuracy_val = np.mean(predictions_val == self.y_val)
-        print("Précision sur l'ensemble de validation:", accuracy_val)
-
-# Exemple d'utilisation du modèle
-# Assurez-vous de remplacer ces variables par vos propres données
-# x_train, y_train, x_val, y_val, x_test, y_test = [Votre ensemble de données ici]
-# model = AdaBoost_model(x_train, y_train, x_val, y_val, x_test, y_test)
-# model.entrainement()
-# model.evaluer_sur_validation()
-# predictions = model.prediction()

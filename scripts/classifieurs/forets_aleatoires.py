@@ -16,19 +16,17 @@ class Forets_aleatoires(object):
 
     def validation_croisee_gridsearch(self):
         parameters = {
-            'n_estimators': [50, 100, 200, 300],
+            'n_estimators': [100, 200],  
             'criterion': ['gini', 'entropy'],
-            'max_depth': [None, 10, 20, 30],
-            'min_samples_split': [2, 4, 8, 10],
-            'min_samples_leaf': [1, 2, 4],
-            'max_features': [None, 'sqrt', 'log2'],
-            'bootstrap': [True, False],
-            'min_impurity_decrease': [0.0, 0.01, 0.02],
-            'class_weight': [None, 'balanced', 'balanced_subsample']
+            'max_depth': [None, 20],  
+            'min_samples_split': [2, 10],  
+            'min_samples_leaf': [1, 4],  
+            'max_features': ['sqrt'],  
+            
         }
 
         clf = GridSearchCV(self.rf_classifier, parameters, cv=5, n_jobs=-1, scoring='accuracy')
-        clf.fit(self.x_train, self.y_train)  # Utilisation de x_train et y_train pour GridSearchCV
+        clf.fit(self.x_train, self.y_train)
 
         self.rf_classifier = clf.best_estimator_
 
@@ -36,7 +34,7 @@ class Forets_aleatoires(object):
 
     def entrainement(self):
         self.validation_croisee_gridsearch()
-        self.rf_classifier.fit(self.x_train, self.y_train)  # Entraînement avec x_train et y_train
+        self.rf_classifier.fit(self.x_train, self.y_train)  
 
     def prediction(self):
         return self.rf_classifier.predict(self.x_test)
@@ -44,9 +42,4 @@ class Forets_aleatoires(object):
     def prediction_proba(self):
         return self.rf_classifier.predict_proba(self.x_test)
 
-    def evaluation(self):
-        y_pred = self.prediction()
-        print("Matrice de confusion :")
-        print(confusion_matrix(self.y_test, y_pred))
-        print("\nRapport de classification :")
-        print(classification_report(self.y_test, y_pred))
+

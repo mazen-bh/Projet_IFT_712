@@ -34,5 +34,5 @@ class Bagging(object):
     def prediction(self):
         return self.bg_classifier.predict(self.x_test)
 
-    def predict_proba(self):
+    def prediction_proba(self):
         return self.bg_classifier.predict_proba(self.x_test)

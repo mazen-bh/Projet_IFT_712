@@ -65,8 +65,8 @@ class Reseaux_de_neurones(object):
             alpha=self.best_hyperparameters['alpha'],
             learning_rate_init=self.best_hyperparameters['learning_rate_init'],
             max_iter=500,
-            early_stopping=True,  # Activation de l'arrêt précoce
-            n_iter_no_change=10,  # Arrêt si aucune amélioration après 10 itérations
+            early_stopping=True, 
+            n_iter_no_change=10, 
             solver='lbfgs',
         )
 
@@ -84,10 +84,3 @@ class Reseaux_de_neurones(object):
 
     def prediction_proba(self):
         return self.nn_classifier.predict_proba(self.x_test)
-
-    def resultats_model(self):
-        y_pred = self.nn_classifier.predict(self.x_test)
-        print("Confusion Matrix:")
-        print(confusion_matrix(self.y_test, y_pred))
-        print("\nClassification Report:")
-        print(classification_report(self.y_test, y_pred))

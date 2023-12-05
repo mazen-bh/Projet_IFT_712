@@ -15,17 +15,14 @@ class Arbre_de_decision(object):
     def validation_croisee_gridsearch(self):
         parameters = {
             'criterion': ['gini', 'entropy'],
-            'splitter': ['best', 'random'],
-            'max_depth': [None, 3, 5, 7],  # Réduire la complexité
-            'min_samples_split': [2, 4, 6, 8, 10],  # Augmenter pour plus de généralisation
-            'min_samples_leaf': [1, 2, 4, 6, 8],  # Augmenter pour plus de généralisation
-            'max_features': [None, 'auto', 'sqrt', 'log2'],
-            'class_weight': [None, 'balanced'],
-            'min_impurity_decrease': [0.0, 0.01, 0.05],
-            'max_leaf_nodes': [None, 10, 20, 30, 40, 50]  # Ajouter plus d'options
+            'max_depth': [None, 10], 
+            'min_samples_split': [2, 10],  
+            'min_samples_leaf': [1, 4],  
+            'max_features': ['auto']
         }
+
         clf = GridSearchCV(self.dt_classifier, parameters, cv=5, n_jobs=-1, scoring='accuracy')
-        clf.fit(self.x_train, self.y_train)  # Utilisation de x_train et y_train
+        clf.fit(self.x_train, self.y_train)
 
         self.dt_classifier = clf.best_estimator_
 
@@ -33,11 +30,12 @@ class Arbre_de_decision(object):
 
     def entrainement(self):
         self.validation_croisee_gridsearch()
-        self.dt_classifier.fit(self.x_train, self.y_train)  # Entraînement avec x_train et y_train
+        self.dt_classifier.fit(self.x_train, self.y_train)  
 
     def prediction(self):
         return self.dt_classifier.predict(self.x_test)
 
-
+    def prediction_proba(self):
+        return self.dt_classifier.predict_proba(self.x_test)
 
   

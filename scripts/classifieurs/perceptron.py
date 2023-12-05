@@ -28,8 +28,7 @@ class Perceptron_model(object):
         }
 
         clf = GridSearchCV(self.perceptron_classifier, parameters, cv=5, n_jobs=-1)
-        clf.fit(self.x_val, self.y_val)  # Utilisation de x_val et y_val pour la recherche d'hyperparamètres
-
+        clf.fit(self.x_val, self.y_val)  
     
         self.perceptron_classifier = clf.best_estimator_
 
@@ -37,16 +36,12 @@ class Perceptron_model(object):
 
     def entrainement(self):
         self.validation_croisee_gridsearch()
-        self.perceptron_classifier.fit(self.x_train, self.y_train)  # Entraînement avec x_train et y_train
-        train_sizes, train_scores, test_scores = learning_curve(
-            self.perceptron_classifier, self.x_train, self.y_train, cv=5, scoring="accuracy")
+        self.perceptron_classifier.fit(self.x_train, self.y_train)  
         
-        learning_curve_data = {
-            "train_sizes": train_sizes,
-            "train_accuracy": np.mean(train_scores, axis=1),
-            "val_accuracy": np.mean(test_scores, axis=1)
-        }
-        self.learning_curve_data = learning_curve_data
+
 
     def prediction(self):
         return self.perceptron_classifier.predict(self.x_test)
+    
+    def prediction_proba(self):
+        return self.perceptron_classifier.predict_proba(self.x_test)
