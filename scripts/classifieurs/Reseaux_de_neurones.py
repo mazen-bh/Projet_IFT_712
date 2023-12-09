@@ -39,34 +39,33 @@ class Reseaux_de_neurones(object):
         self.x_test = scaler.transform(self.x_test)
         
     def validation_croisee_gridsearch(self):
+        # Configuration des hyperparamètres pour la recherche par grille
         param_grid = {
-            # Réduction de la complexité des structures des couches cachées
             'hidden_layer_sizes': [(50, 50), (50, 30), (30,)],
-            # Utilisation d'une plage plus large pour alpha
             'alpha': [0.001, 0.01, 0.1],
             'activation': ['relu', 'tanh', 'logistic'],
             'learning_rate_init': [0.1, 0.01, 0.001],
         }
- 
-        grid_search = GridSearchCV(MLPClassifier(solver='lbfgs'),
-                                   param_grid, cv=2, n_jobs=-1)
+
+        # Création et exécution de la recherche par grille
+        grid_search = GridSearchCV(MLPClassifier(solver='lbfgs'), param_grid, cv=2, n_jobs=-1)
         combined_x = np.concatenate([self.x_train, self.x_val])
         combined_y = np.concatenate([self.y_train, self.y_val])
         grid_search.fit(combined_x, combined_y)
-        self.best_hyperparameters = grid_search.best_params_  
+
+        # Mise à jour des meilleurs hyperparamètres
+        self.best_hyperparameters = grid_search.best_params_
         print("Best hyperparameters:", self.best_hyperparameters)
-        return combined_x, combined_y
- 
-    def garder_meilleur_hyperparameters(self):
-        combined_x, combined_y = self.validation_croisee_gridsearch()
+
+        # Mise à jour du classificateur avec les meilleurs hyperparamètres
         self.nn_classifier = MLPClassifier(
             hidden_layer_sizes=self.best_hyperparameters['hidden_layer_sizes'],
             activation=self.best_hyperparameters['activation'],
             alpha=self.best_hyperparameters['alpha'],
             learning_rate_init=self.best_hyperparameters['learning_rate_init'],
             max_iter=500,
-            early_stopping=True, 
-            n_iter_no_change=10, 
+            early_stopping=True,
+            n_iter_no_change=10,
             solver='lbfgs',
         )
 
