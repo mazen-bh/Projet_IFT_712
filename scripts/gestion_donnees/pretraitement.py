@@ -25,19 +25,21 @@ class Pretraitement:
         x_train, x_val, y_train, y_val = train_test_split(x_train, y_train, test_size=0.25, random_state=1)
         return x_train, x_test, y_train, y_test, x_val, y_val
 
-    def Indice_outliers(self, df: pd.DataFrame, seuil: float):
-        # Fonction pour trouver les indices des outliers avec Z-score
-        z_scores = stats.zscore(df)
-        outliers = []
-        for i in range(z_scores.shape[0]):
-            cpt = 0
-            for j in range(z_scores.shape[1]):
-                if (z_scores[i, j] > seuil or z_scores[i, j] < -seuil):
-                    cpt += 1
-            if (cpt > 0.1 * z_scores.shape[1]):
-                outliers.append(i)
-        return outliers
 
+    def Indice_outliers(self, df :pd.DataFrame,seuil : float) :
+    # Fonction pour trouver les indices des outliers avec Z-score
+        z_scores=stats.zscore(df)
+        outliers = []
+        for i in range (z_scores.shape[0]):
+            cpt=0
+            for j in range (z_scores.shape[1]):
+                if (z_scores.iloc[i,j] > seuil or z_scores.iloc[i,j] < - seuil ) :
+                    cpt += 1
+            if (cpt>0.1*z_scores.shape[1]):
+                outliers.append(i)
+       
+        return outliers    
+    
     def get_num_classes(data_frame, class_column='class'):
         # Fonction qui retourne le nombre de classes uniques
         num_classes = data_frame[class_column].nunique()

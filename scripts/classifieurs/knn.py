@@ -45,7 +45,7 @@ class Knn(object):
             p=clf.best_params_["p"]
         )
         # Mise à jour du classificateur avec les meilleurs hyperparametres
-        self.knn_classifier = clf.best_estimator
+        self.knn_classifier = clf.best_estimator_
         # Affichage des meilleurs hyperparamètres
         print("Meilleurs hyperparamètres:", clf.best_params_)
         return combined_x, combined_y
