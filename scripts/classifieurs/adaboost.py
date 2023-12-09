@@ -36,11 +36,13 @@ class AdaBoost_model(object):
         }
 
         stratified_k_fold = StratifiedKFold(n_splits=5)
-
+        # Création d'une instance de GridSearchCV avec 5 folds de validation croisée
         clf = GridSearchCV(self.ab_classifier, parameters, cv=stratified_k_fold)
+        # Entrainement du modele avec les paramétres
         clf.fit(self.x_train, self.y_train)
-
+        # Mise à jour du classificateur avec les meilleurs hyperparametres
         self.ab_classifier.set_params(**clf.best_params_)
+        # Affichage des meilleurs hyperparamètres
         print("Meilleurs hyperparamètres:", clf.best_params_)
 
     # Fonction pour entrainer le modèle
