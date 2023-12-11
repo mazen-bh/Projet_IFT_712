@@ -121,9 +121,9 @@ class Evaluation(object):
         plt.plot(train_sizes, test_mean, 'o-', color="g", label="Précision de test")
         plt.fill_between(train_sizes, test_mean - test_std, test_mean + test_std, alpha=0.1, color="g")
 
-        plt.title('Courbes d\'apprentissage de précision')
+        plt.title('Courbes d\'apprentissage de justesse')
         plt.xlabel('Taille de l\'ensemble d\'entraînement')
-        plt.ylabel('Précision')
+        plt.ylabel('Justesse')
         plt.legend(loc='best')
         plt.grid()
         plt.show()
