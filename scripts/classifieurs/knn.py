@@ -5,7 +5,7 @@ from sklearn.metrics import classification_report, confusion_matrix
 import numpy as np
 import pandas as pd
  
- # Classe pour modele Forets aleatoires
+ # Classe pour modele Knn
 class Knn(object):
     param_grid_default = {'n_neighbors': [3, 5, 7], 'weights': ['uniform', 'distance'], 'p': [1, 2]}
     # Constructeur de la classe 

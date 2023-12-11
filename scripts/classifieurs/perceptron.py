@@ -1,4 +1,4 @@
-# Importations nécessaires
+#Importation des librairies
 from sklearn.linear_model import Perceptron
 from sklearn.model_selection import GridSearchCV, learning_curve
 from sklearn.metrics import classification_report, confusion_matrix
@@ -9,6 +9,7 @@ import seaborn as sns
 
 # Classe pour modele de Perceptron
 class Perceptron_model(object):
+    # Constructeur de la classe
     def __init__(self, x_train, y_train, x_val, y_val, x_test, y_test):
         self.x_train = x_train # Données d'entrainement
         self.y_train = y_train # Etiquettes 
