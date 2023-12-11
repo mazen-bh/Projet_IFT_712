@@ -6,6 +6,9 @@ import seaborn as sns
 from sklearn.metrics import roc_curve, auc, confusion_matrix, classification_report, f1_score, precision_score, recall_score
 from sklearn.preprocessing import LabelBinarizer
 from sklearn.preprocessing import label_binarize
+from sklearn.metrics import precision_recall_curve
+from sklearn.metrics import average_precision_score
+
 
 # Classe pour L'evaluation des modéles
 class Evaluation(object):
@@ -59,12 +62,15 @@ class Evaluation(object):
         y_pred = self.model.predict(self.x_test)
         cm = confusion_matrix(self.y_test, y_pred)
 
-        plt.figure(figsize=(8, 6))
-        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=False)
-        plt.title('Confusion Matrix')
-        plt.xlabel('Predicted')
-        plt.ylabel('Actual')
+        plt.figure(figsize=(16, 12))  
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", cbar=True, annot_kws={"size": 6}) 
+        plt.title('Matrice de Confusion')
+        plt.xlabel('Prévu')
+        plt.ylabel('Réel')
+        plt.xticks(fontsize=7, rotation=90)  
+        plt.yticks(fontsize=7, rotation=0)  
         plt.show()
+
 
     # Fonction pour afficher le rapport de classification du modele 
     def generate_classification_report(self):
