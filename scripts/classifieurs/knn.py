@@ -32,7 +32,7 @@ class Knn(object):
             'weights': ['uniform', 'distance'],
             'p': [1, 2]
         }
-        # Création d'une instance de GridSearchCV avec 5 folds de validation croisée
+        # Création d'une instance de GridSearchCV avec 2 folds de validation croisée
         clf = GridSearchCV(self.knn_classifier, parameters, cv=2)
         combined_x = pd.concat([self.x_train, self.x_val], ignore_index=True)
         combined_y = self.y_train + self.y_val
