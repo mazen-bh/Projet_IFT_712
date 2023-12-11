@@ -3,6 +3,8 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
 from scipy import stats
+import matplotlib.pyplot as plt
+from pandas.plotting import table
 
 # Classe pour Le pretraitement des données
 class Pretraitement:
@@ -51,6 +53,26 @@ class Pretraitement:
         
         num_classes = data_frame[class_column].nunique()
         return num_classes
+
+    # Compter le nombre d'éléments dans chaque classe
+    def plot_class_distribution(self, df, class_column):
+        class_counts = df[class_column].value_counts()
+
+        table_df = pd.DataFrame({
+            'Classe': class_counts.index,
+            'Nombre d\'éléments': class_counts.values
+        })
+
+        # Ajuster la taille de la figure et la largeur des colonnes
+        fig, ax = plt.subplots(figsize=(12, 6))  # Augmentation de la taille de la figure
+        ax.axis('off')
+        colWidths = [0.3, 0.3]  # Ajuster en fonction de la longueur des noms de vos classes
+        tbl = table(ax, table_df, loc='center', cellLoc='center', colWidths=colWidths)
+        tbl.auto_set_font_size(False)
+        tbl.set_fontsize(12)
+        tbl.scale(1.2, 1.2)
+
+        plt.show()
 
 
 
