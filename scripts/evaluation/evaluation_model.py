@@ -97,7 +97,7 @@ class Evaluation(object):
         plt.fill_between(train_sizes, test_loss - test_loss_std, test_loss + test_loss_std, alpha=0.1, color="g")
 
         plt.title('Courbes de perte d\'apprentissage')
-        plt.xlabel('Taille de l\'ensemble d\'entraînement')
+        plt.xlabel('Taille de l\'ensemble ')
         plt.ylabel('Perte')
         plt.legend(loc='best')
         plt.grid()
@@ -116,13 +116,13 @@ class Evaluation(object):
         test_std = np.std(test_scores, axis=1)
 
         plt.figure(figsize=(12, 8))
-        plt.plot(train_sizes, train_mean, 'o-', color="r", label="Précision d'entraînement")
+        plt.plot(train_sizes, train_mean, 'o-', color="r", label="Justesse d'entraînement")
         plt.fill_between(train_sizes, train_mean - train_std, train_mean + train_std, alpha=0.1, color="r")
-        plt.plot(train_sizes, test_mean, 'o-', color="g", label="Précision de test")
+        plt.plot(train_sizes, test_mean, 'o-', color="g", label="Justesse de test")
         plt.fill_between(train_sizes, test_mean - test_std, test_mean + test_std, alpha=0.1, color="g")
 
         plt.title('Courbes d\'apprentissage de justesse')
-        plt.xlabel('Taille de l\'ensemble d\'entraînement')
+        plt.xlabel('Taille de l\'ensemble')
         plt.ylabel('Justesse')
         plt.legend(loc='best')
         plt.grid()
